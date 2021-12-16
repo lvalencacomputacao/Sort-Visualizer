@@ -14,16 +14,36 @@ def draw(phases, height, width, display):
         pygame.display.update()
 
 def listen():
+    global numbers, height, width, gameDisplay
     while True:
         recognizer = speech_recognition.Recognizer()
         with speech_recognition.Microphone() as source:
             print("Listening")
-            recognizer.pause_threshold = 1
+            recognizer.pause_threshold = 0.5
             recognizer.energy_threshold = 4000
             audio = recognizer.listen(source)
         try:
             query = recognizer.recognize_google(audio, language="pt-br")
             print(query)
+
+            if query == "ordenar crescente":
+                sorting_method = sorting_methods[0]
+                phases = sorting_method(numbers)
+
+                thread = threading.Thread(target=draw, args=(phases, height, width, gameDisplay,))
+                thread.start()
+            elif query == "ordenar decrescente":
+                sorting_method = sorting_methods[1]
+                phases = sorting_method(numbers)
+
+                thread = threading.Thread(target=draw, args=(phases, height, width, gameDisplay,))
+                thread.start()
+            elif query == "embaralhar":
+                sorting_method = sorting_methods[2]
+                phases = sorting_method(numbers)
+
+                thread = threading.Thread(target=draw, args=(phases, height, width, gameDisplay,))
+                thread.start()
 
         except Exception as e:
             print("I couldn't hear you. Exception:", e)
