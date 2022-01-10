@@ -5,7 +5,7 @@ import sorting
 def draw(phases, height, width, display):
     for i in range(len(phases)):
         k=0.5
-        time.sleep(1/len(phases[0])*k)
+        time.sleep(1/(len(phases[0])**2)*k)
         display.fill((0, 0, 0))
         for j in range(len(phases[0])):
             y = max(0, height-phases[i][j])
@@ -26,24 +26,26 @@ def listen():
             query = recognizer.recognize_google(audio, language="pt-br")
             print(query)
 
-            if query == "ordenar crescente":
+            if "ordenar crescente" in query:
                 sorting_method = sorting_methods[0]
                 phases = sorting_method(numbers)
 
                 thread = threading.Thread(target=draw, args=(phases, height, width, gameDisplay,))
                 thread.start()
-            elif query == "ordenar decrescente":
+            elif "ordenar decrescente" in query:
                 sorting_method = sorting_methods[1]
                 phases = sorting_method(numbers)
 
                 thread = threading.Thread(target=draw, args=(phases, height, width, gameDisplay,))
                 thread.start()
-            elif query == "embaralhar":
+            elif "embaralhar" in query:
                 sorting_method = sorting_methods[2]
                 phases = sorting_method(numbers)
 
                 thread = threading.Thread(target=draw, args=(phases, height, width, gameDisplay,))
                 thread.start()
+            elif query == "owo":
+                print("uwu")
 
         except Exception as e:
             print("I couldn't hear you. Exception:", e)
